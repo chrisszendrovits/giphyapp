@@ -1,9 +1,8 @@
 package com.oneclass.giphy.ui.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -14,16 +13,24 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.giphy.sdk.core.models.Image;
 import com.giphy.sdk.core.models.Media;
 import com.oneclass.giphy.R;
 
 public class GifPreviewActivity extends AppCompatActivity {
 
+    static public final String mediaExtra = "media_extra";
+
     ImageView mImageView;
-
     Button mShareButton;
-
     private Media mMedia;
+
+    public static Intent createIntent(Context context, Media media) {
+        Intent previewIntent = new Intent(context, GifPreviewActivity.class);
+        previewIntent.putExtra(GifPreviewActivity.mediaExtra, media);
+        return previewIntent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,12 +46,17 @@ public class GifPreviewActivity extends AppCompatActivity {
         }
 
         mImageView = (ImageView) findViewById(R.id.image_view);
-
         mShareButton = (Button) findViewById(R.id.share_button);
 
-        // TODO: Get the Media object for display
+        Intent intent = getIntent();
 
-        // TODO: Show the original Gif in `mImageView`
+        if (intent != null) {
+            mMedia = intent.getParcelableExtra(GifPreviewActivity.mediaExtra);
+        }
+
+        if (mMedia != null) {
+            setImage(mMedia);
+        }
 
         // TODO: Implement sharing
         mShareButton.setOnClickListener(new View.OnClickListener() {
@@ -53,6 +65,17 @@ public class GifPreviewActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    protected void setImage(Media media) {
+        Image fixedWidthImage = media.getImages().getFixedWidth();
+
+        if (fixedWidthImage != null) {
+
+            Glide.with(mImageView)
+                    .load(fixedWidthImage.getGifUrl())
+                    .into(mImageView);
+        }
     }
 
     @Override

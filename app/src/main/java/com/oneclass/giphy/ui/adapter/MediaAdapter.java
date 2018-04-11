@@ -102,7 +102,6 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.ViewHolder> 
             Image fixedWidthImage = media.getImages().getFixedWidth();
 
             if (fixedWidthImage != null) {
-
                 ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) mImageView.getLayoutParams();
                 layoutParams.dimensionRatio = String.format("W,%d:%d", fixedWidthImage.getHeight(), fixedWidthImage.getWidth());
                 mImageView.requestLayout();

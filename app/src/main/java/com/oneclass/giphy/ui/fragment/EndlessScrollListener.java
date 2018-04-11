@@ -5,16 +5,14 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 
 /**
- * Created by acc on 2018-04-10.
+ * Created by chrisszendrovits on 2018-04-10.
  */
 
 class EndlessScrollListener extends RecyclerView.OnScrollListener {
-    private boolean isLoading;
-    private boolean hasMorePages;
-    private int pageNumber = 0;
+
+    private boolean isLoading, hasMorePages, isRefreshing;
+    private int pageNumber = 0, pastVisibleItems;
     private RefreshList refreshList;
-    private boolean isRefreshing;
-    private int pastVisibleItems;
 
     EndlessScrollListener(RefreshList refreshList) {
         this.isLoading = false;
@@ -50,13 +48,19 @@ class EndlessScrollListener extends RecyclerView.OnScrollListener {
         }
     }
 
-    public void noMorePages() {
+    public void notifyNoMorePages() {
         this.hasMorePages = false;
     }
 
     public void notifyMorePages() {
         isRefreshing = false;
         pageNumber = pageNumber + 1;
+    }
+
+    public void reset() {
+        isRefreshing = false;
+        isLoading = false;
+        pageNumber = 0;
     }
 
     interface RefreshList {

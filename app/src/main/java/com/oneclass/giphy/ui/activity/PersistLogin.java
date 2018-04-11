@@ -18,7 +18,6 @@ public class PersistLogin {
     }
 
     public void saveLoginCredentials(LoginCredentials credentials) {
-        //int mode = Activity.MODE.PRIVATE;
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(this.usernameKey, credentials.username);
         editor.putString(this.passwordKey, credentials.password);

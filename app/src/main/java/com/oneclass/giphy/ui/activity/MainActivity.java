@@ -12,9 +12,29 @@ import android.view.MenuItem;
 import com.oneclass.giphy.R;
 import com.oneclass.giphy.ui.adapter.MainPagerAdapter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
+    public interface SearchQueryListener {
+        void updateSearchQuery(String query);
+    }
+
+    private List<SearchQueryListener> listeners = new ArrayList<>();
     private ViewPager mViewPager;
+
+    public void addListener(SearchQueryListener listener) {
+        if (!listeners.contains(listener)) {
+            listeners.add(listener);
+        }
+    }
+
+    public void removeListener(SearchQueryListener listener) {
+        if (listeners.contains(listener)) {
+            listeners.remove(listener);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,20 +75,24 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
         MenuItem menuItem = menu.findItem(R.id.action_search);
-
         SearchView searchView = (SearchView) menuItem.getActionView();
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                return false;
+                for (SearchQueryListener listener : listeners) {
+                    listener.updateSearchQuery(query);
+                }
+                return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                // TODO: Update the GIFs displayed in `Trending` tab by the query text
-
-
+                if (newText.isEmpty()) {
+                    for (SearchQueryListener listener : listeners) {
+                        listener.updateSearchQuery("");
+                    }
+                }
                 return true;
             }
         });
