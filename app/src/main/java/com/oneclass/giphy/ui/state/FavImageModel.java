@@ -18,9 +18,15 @@ public class FavImageModel {
     @ColumnInfo(name = "favImageUrl")
     private String favImageUrl;
 
+    @ColumnInfo(name = "favImageData")
+    private String favImageData;
+
     public int getFavImageId() { return this.favImageId; }
     public void setFavImageId(int id) { this.favImageId = id; }
 
     public String getFavImageUrl() { return this.favImageUrl; }
     public void setFavImageUrl(String url) { this.favImageUrl = url; }
+
+    public String getFavImageData() { return this.favImageData; }
+    public void setFavImageData(String data) { this.favImageData = data; }
 }

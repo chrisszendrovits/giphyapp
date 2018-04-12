@@ -17,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.giphy.sdk.core.models.Image;
 import com.giphy.sdk.core.models.Media;
 import com.oneclass.giphy.R;
 import com.oneclass.giphy.ui.adapter.MediaAdapter;

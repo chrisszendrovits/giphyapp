@@ -79,6 +79,7 @@ public class LoginActivity extends AppCompatActivity {
 
         if (!restoreLoginCredentials()) {
             mLoginFormView.setVisibility(View.VISIBLE);
+            showProgress(false);
         }
     }
 

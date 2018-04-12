@@ -1,9 +1,7 @@
 package com.oneclass.giphy.ui.fragment;
 
-
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -80,43 +78,7 @@ public class TrendingFragment extends Fragment implements MainActivity.SearchQue
         });
 
         mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
-            @Override
-            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-                super.getItemOffsets(outRect, view, parent, state);
-
-                StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) view.getLayoutParams();
-
-                int spanIndex = layoutParams.getSpanIndex();
-                int index = parent.getChildLayoutPosition(view);
-                int itemCount = parent.getAdapter().getItemCount();
-
-                switch (spanIndex) {
-                    case 0:
-                        outRect.left = 16;
-                        outRect.right = 8;
-                        break;
-                    case 1:
-                        outRect.left = 8;
-                        outRect.right = 16;
-                        break;
-                }
-
-                if (index < 2) {
-                    outRect.top = 16;
-                    outRect.bottom = 8;
-                } else if (index == itemCount - 1) {
-                    outRect.top = 8;
-                    outRect.bottom = 16;
-                } else if (index == itemCount - 2 && layoutParams.isFullSpan()) {
-                    outRect.top = 8;
-                    outRect.bottom = 16;
-                } else {
-                    outRect.top = 8;
-                    outRect.bottom = 8;
-                }
-            }
-        });
+        mRecyclerView.addItemDecoration(MediaAdapter.getViewItemDecoration());
 
         scrollListener = new EndlessScrollListener(new EndlessScrollListener.RefreshList() {
             @Override

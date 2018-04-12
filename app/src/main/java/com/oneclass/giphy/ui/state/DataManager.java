@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 import com.giphy.sdk.core.models.Image;
 import com.giphy.sdk.core.models.Media;
+import com.google.gson.Gson;
 import com.oneclass.giphy.ui.adapter.MediaAdapter;
 
 import java.util.ArrayList;
@@ -40,6 +41,7 @@ public class DataManager {
         if (url != null) {
             FavImageModel imageModel = new FavImageModel();
             imageModel.setFavImageUrl(url);
+            imageModel.setFavImageData(new Gson().toJson(media));
 
             primaryKey = (int)database.favImageDao().insert(imageModel);
         }
@@ -54,13 +56,23 @@ public class DataManager {
         }
     }
 
-    public List<FavImageModel> getAllImages() {
-        return database.favImageDao().getAllImages();
+    public List<Media> getAllMedia() {
+        return extractMedia(database.favImageDao().getAllImages());
     }
 
     public void destroy() {
         if (database != null) {
             database.destroyInstance();
         }
+    }
+
+    public static List<Media> extractMedia(List<FavImageModel> modelList) {
+        List<Media> mediaList = new ArrayList<>();
+
+        for (FavImageModel imageModel : modelList) {
+            Media media = new Gson().fromJson(imageModel.getFavImageData(), Media.class);
+            mediaList.add(media);
+        }
+        return mediaList;
     }
 }

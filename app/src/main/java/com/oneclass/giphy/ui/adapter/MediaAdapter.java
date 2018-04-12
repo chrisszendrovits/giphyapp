@@ -1,7 +1,9 @@
 package com.oneclass.giphy.ui.adapter;
 
+import android.graphics.Rect;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -122,5 +124,46 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.ViewHolder> 
             url = fixedWidthImage.getGifUrl();
         }
         return url;
+    }
+
+    public static RecyclerView.ItemDecoration getViewItemDecoration() {
+        RecyclerView.ItemDecoration itemDecoration = new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+                super.getItemOffsets(outRect, view, parent, state);
+
+                StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) view.getLayoutParams();
+
+                int spanIndex = layoutParams.getSpanIndex();
+                int index = parent.getChildLayoutPosition(view);
+                int itemCount = parent.getAdapter().getItemCount();
+
+                switch (spanIndex) {
+                    case 0:
+                        outRect.left = 16;
+                        outRect.right = 8;
+                        break;
+                    case 1:
+                        outRect.left = 8;
+                        outRect.right = 16;
+                        break;
+                }
+
+                if (index < 2) {
+                    outRect.top = 16;
+                    outRect.bottom = 8;
+                } else if (index == itemCount - 1) {
+                    outRect.top = 8;
+                    outRect.bottom = 16;
+                } else if (index == itemCount - 2 && layoutParams.isFullSpan()) {
+                    outRect.top = 8;
+                    outRect.bottom = 16;
+                } else {
+                    outRect.top = 8;
+                    outRect.bottom = 8;
+                }
+            }
+        };
+        return itemDecoration;
     }
 }
