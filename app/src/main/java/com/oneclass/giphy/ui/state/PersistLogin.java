@@ -1,4 +1,4 @@
-package com.oneclass.giphy.ui.activity;
+package com.oneclass.giphy.ui.state;
 
 import android.content.Context;
 import android.content.SharedPreferences;

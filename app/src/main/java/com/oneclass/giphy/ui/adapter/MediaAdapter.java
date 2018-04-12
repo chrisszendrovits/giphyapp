@@ -113,4 +113,14 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.ViewHolder> 
         }
 
     }
+
+    public static String getImageUrlFrom(Media media) {
+        Image fixedWidthImage = media.getImages().getFixedWidth();
+        String url = null;
+
+        if (fixedWidthImage != null) {
+            url = fixedWidthImage.getGifUrl();
+        }
+        return url;
+    }
 }

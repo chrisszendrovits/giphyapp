@@ -19,7 +19,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.oneclass.giphy.R;
-import com.oneclass.giphy.ui.activity.PersistLogin.LoginCredentials;
+import com.oneclass.giphy.ui.state.PersistLogin;
+import com.oneclass.giphy.ui.state.PersistLogin.LoginCredentials;
 
 /**
  * A login screen that offers login via email/password.
