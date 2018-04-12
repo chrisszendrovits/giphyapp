@@ -1,9 +1,5 @@
 package com.oneclass.giphy.ui.state;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import com.giphy.sdk.core.models.Image;
 import com.giphy.sdk.core.models.Media;
 import com.google.gson.Gson;
 import com.oneclass.giphy.ui.adapter.MediaAdapter;

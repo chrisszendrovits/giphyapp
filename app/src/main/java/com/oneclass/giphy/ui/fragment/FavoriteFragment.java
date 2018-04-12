@@ -1,5 +1,6 @@
 package com.oneclass.giphy.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,7 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.giphy.sdk.core.models.Media;
 import com.oneclass.giphy.R;
+import com.oneclass.giphy.ui.activity.GifPreviewActivity;
 import com.oneclass.giphy.ui.adapter.MediaAdapter;
 import com.oneclass.giphy.ui.state.DataManager;
 import com.oneclass.giphy.ui.state.DataStore;
@@ -21,10 +24,8 @@ import com.oneclass.giphy.ui.state.DataStore;
 public class FavoriteFragment extends Fragment {
 
     private DataManager dataManager;
-
     private RecyclerView mRecyclerView;
     private MediaAdapter mAdapter;
-    //private List<Media> mediaList = new ArrayList<>();
 
     public FavoriteFragment() {
         // Required empty public constructor
@@ -43,6 +44,14 @@ public class FavoriteFragment extends Fragment {
 
         dataManager = new DataManager(DataStore.getDatabase(getContext()));
         mAdapter = new MediaAdapter();
+        mAdapter.setOnItemClickListener(new MediaAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position, View view) {
+                Media media = mAdapter.getMedia(position);
+                Intent intent = GifPreviewActivity.createIntent(getContext(), media);
+                startActivity(intent);
+            }
+        });
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);

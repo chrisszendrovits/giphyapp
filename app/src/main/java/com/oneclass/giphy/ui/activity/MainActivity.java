@@ -8,6 +8,7 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.oneclass.giphy.R;
 import com.oneclass.giphy.ui.adapter.MainPagerAdapter;
@@ -23,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     private List<SearchQueryListener> listeners = new ArrayList<>();
     private ViewPager mViewPager;
+    private Menu menu;
 
     public void addListener(SearchQueryListener listener) {
         if (!listeners.contains(listener)) {
@@ -57,7 +59,15 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-                // TODO: Make search bar visible only when current page is `Trending`
+                MenuItem menuItem = menu.findItem(R.id.action_search);
+                SearchView searchView = (SearchView) menuItem.getActionView();
+
+                if (position == 0) {
+                    searchView.setVisibility(View.VISIBLE);
+                }
+                else {
+                    searchView.setVisibility(View.GONE);
+                }
             }
 
             @Override
@@ -72,10 +82,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-
-        MenuItem menuItem = menu.findItem(R.id.action_search);
-        final SearchView searchView = (SearchView) menuItem.getActionView();
+        getMenuInflater().inflate(R.menu.menu_main, this.menu = menu);
+        final SearchView searchView = getSearchView();
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -98,5 +106,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
         return true;
+    }
+
+    protected SearchView getSearchView() {
+        MenuItem menuItem = menu.findItem(R.id.action_search);
+        return (SearchView) menuItem.getActionView();
     }
 }
